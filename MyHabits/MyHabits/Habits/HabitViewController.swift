@@ -7,15 +7,15 @@
 
 import UIKit
 
-protocol ReloadingCollectionDataDelegate: AnyObject {
+protocol ReloadingCollectionDataDelegate: class {
     func updCollection()
 }
 
-protocol ReloadingTitleDelegate: AnyObject {
+protocol ReloadingTitleDelegate: class {
     func reloadTitle()
 }
 
-protocol DissmissingViewControllerDelegate: AnyObject {
+protocol DissmissingViewControllerDelegate: class {
     func dismissViewController()
 }
 
@@ -36,6 +36,8 @@ class HabitViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapColorPicker))
         colorPickerButton.isUserInteractionEnabled = true
         colorPickerButton.addGestureRecognizer(tapGestureRecognizer)
+        
+        navigationController?.navigationBar.tintColor = .customPurple
         
         setupView()
         dateChanged()
@@ -78,7 +80,7 @@ class HabitViewController: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.roundCornerWithRadius(15, top: true, bottom: true, shadowEnabled: false)
-        imageView.backgroundColor = .CustomPurple
+        imageView.backgroundColor = .customPurple
         
         return imageView
     }()
@@ -105,7 +107,7 @@ class HabitViewController: UIViewController {
     lazy var datepickerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .CustomPurple
+        label.textColor = .customPurple
         label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
 
         return label
@@ -151,7 +153,7 @@ class HabitViewController: UIViewController {
             if let habit = editingHabit, let index = HabitsStore.shared.habits.firstIndex(of: habit) {
                 HabitsStore.shared.habits[index].name = nameHabitTextField.text ?? ""
                 HabitsStore.shared.habits[index].date = datepicker.date
-                HabitsStore.shared.habits[index].color = colorPickerButton.backgroundColor ?? .CustomPurple
+                HabitsStore.shared.habits[index].color = colorPickerButton.backgroundColor ?? .customPurple
                 HabitsStore.shared.save()
                 reloadingDataDelegate?.updCollection()
                 reloadingTitleDelegate?.reloadTitle()
@@ -169,7 +171,7 @@ class HabitViewController: UIViewController {
             
             let newHabit = Habit(name: nameHabitTextField.text ?? "",
                                  date: datepicker.date,
-                                 color: colorPickerButton.backgroundColor ?? .CustomPurple)
+                                 color: colorPickerButton.backgroundColor ?? .customPurple)
             let store = HabitsStore.shared
             store.habits.append(newHabit)
             reloadingDataDelegate?.updCollection()
@@ -189,26 +191,25 @@ class HabitViewController: UIViewController {
     }
     
     @objc func deleteButtonPressed() {
-        
-        let alertController = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку \(nameHabitLabel.text ?? "")", preferredStyle: .alert)
-        
+         
+        let alertController = UIAlertController(title: "Удалить привычку?", message: "Вы хотите удалить привычку \(nameHabitLabel.text ?? "")", preferredStyle: .alert)
+         
         let cancelAction = UIAlertAction(title: "Отмена", style: .default) {_ in
-                alertController.dismiss(animated: true, completion: nil)
+            alertController.dismiss(animated: true, completion: nil)
         }
-        
+         
         let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
-            if let habit = self.editingHabit, let index = HabitsStore.shared.habits.firstIndex(of: habit) {
-                HabitsStore.shared.habits.remove(at: index)
-                
-                self.reloadingDataDelegate?.updCollection()
-                self.dismiss(animated: true, completion: nil)
-                self.dismissingVCDelegate?.dismissViewController()
-            }
+          if let habit = self.editingHabit, let index = HabitsStore.shared.habits.firstIndex(of: habit) {
+            HabitsStore.shared.habits.remove(at: index)
+             
+            self.dismiss(animated: true, completion: nil)
+            self.dismissingVCDelegate?.dismissViewController()
+          }
         }
         alertController.addAction(cancelAction)
         alertController.addAction(deleteAction)
         self.present(alertController, animated: true, completion: nil)
-    }
+      }
 }
 
 extension HabitViewController {
@@ -231,8 +232,8 @@ extension HabitViewController {
         let leftBarButtonItem = UIBarButtonItem(title: "Отменить", style: UIBarButtonItem.Style.plain, target: self, action: #selector(actionCancelButton))
         let rightBarButtonItem = UIBarButtonItem(title: "Сохранить", style: UIBarButtonItem.Style.done, target: self, action: #selector(actionSaveButton))
 
-        leftBarButtonItem.tintColor = .CustomPurple
-        rightBarButtonItem.tintColor = .CustomPurple
+        leftBarButtonItem.tintColor = .customPurple
+        rightBarButtonItem.tintColor = .customPurple
         navigItem.rightBarButtonItem = rightBarButtonItem
         navigItem.leftBarButtonItem = leftBarButtonItem
 

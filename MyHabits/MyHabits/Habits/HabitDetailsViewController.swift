@@ -24,9 +24,11 @@ class HabitDetailsViewController: UIViewController {
         
         title = detailsHabit?.name
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Править", style: .plain, target: self, action: #selector(editTap))
-        navigationController?.navigationBar.tintColor = .CustomPurple
+        navigationController?.navigationBar.tintColor = .customPurple
         
         setupView()
+        
+        navigationItem.largeTitleDisplayMode = .never
 
         habitTableView.dataSource = self
         habitTableView.delegate = self
@@ -39,6 +41,8 @@ class HabitDetailsViewController: UIViewController {
         habitVC.editingHabit = detailsHabit
         habitVC.isOnEditMode = true
         habitVC.setupEditingMode()
+        habitVC.dismissingVCDelegate = self
+        habitVC.reloadingTitleDelegate = self
         
         navigationController?.present(habitVC, animated: true, completion: nil)
     }
@@ -74,7 +78,7 @@ extension HabitDetailsViewController: UITableViewDataSource {
         if let habit = detailsHabit {
             if HabitsStore.shared.habit(habit, isTrackedIn: HabitsStore.shared.dates[indexPath.row]) {
                 cell.accessoryType = .checkmark
-                cell.tintColor = .CustomPurple
+                cell.tintColor = .customPurple
             } else {
                 cell.accessoryType = .none
             }
@@ -93,9 +97,6 @@ extension HabitDetailsViewController: UITableViewDataSource {
 }
 
 extension HabitDetailsViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return .zero
-//    }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return .zero
@@ -107,16 +108,12 @@ extension HabitDetailsViewController: ReloadingTitleDelegate {
     func reloadTitle() {
         if let habit = detailsHabit, let index = HabitsStore.shared.habits.firstIndex(of: habit) {
             title = HabitsStore.shared.habits[index].name
-            print(HabitsStore.shared.habits[index].name)
         }
     }
 }
 
 extension HabitDetailsViewController: DissmissingViewControllerDelegate {
     func dismissViewController() {
-        print("delete")
-        self.navigationController?.popViewController(animated: true)
-        //self.navigationController?.popToRootViewController(animated: true)
-
+        self.navigationController?.popViewController(animated: false)
     }
 }

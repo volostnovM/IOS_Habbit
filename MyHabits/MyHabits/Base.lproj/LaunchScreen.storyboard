@@ -22,7 +22,7 @@
                                     <constraint firstAttribute="width" constant="88" id="CzW-Os-Fhd"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" red="0.63137254901960782" green="0.086274509803921567" blue="0.79937381202480995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.63137254901960782" green="0.086274509803921567" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">

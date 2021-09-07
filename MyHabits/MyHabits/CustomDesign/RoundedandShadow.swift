@@ -5,7 +5,6 @@
 //  Created by TIS Developer on 11.08.2021.
 //
 
-import Foundation
 import UIKit
 
 extension UIView {

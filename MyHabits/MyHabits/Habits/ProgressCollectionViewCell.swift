@@ -31,7 +31,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
     let progressLine: UIProgressView = {
         let progressLine = UIProgressView()
         progressLine.setProgress(HabitsStore.shared.todayProgress, animated: true)
-        progressLine.progressTintColor = .CustomPurple
+        progressLine.progressTintColor = .customPurple
         progressLine.trackTintColor = .systemGray2
         progressLine.translatesAutoresizingMaskIntoConstraints = false
         progressLine.layer.cornerRadius = 4

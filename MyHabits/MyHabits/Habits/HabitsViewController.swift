@@ -16,7 +16,7 @@ class HabitsViewController: UIViewController {
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .AlmostWhite
+        collectionView.backgroundColor = .almostWhite
         collectionView.register(HabbitCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: HabbitCollectionViewCell.self))
         collectionView.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: EmptyCollectionViewCell.self))
         collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: ProgressCollectionViewCell.self))
@@ -32,24 +32,19 @@ class HabitsViewController: UIViewController {
         view.addSubview(habitsCollectionView)
         setupView()
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.tintColor = .customPurple
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addHabit))
-        navigationItem.rightBarButtonItem?.tintColor = .CustomPurple
+        navigationItem.rightBarButtonItem?.tintColor = .customPurple
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.navigationBar.prefersLargeTitles = true
         habitsCollectionView.reloadData()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
     
     
     @objc func addHabit(sender: UIButton!) {
@@ -129,6 +124,7 @@ extension HabitsViewController: UICollectionViewDataSource {
                 let cellHabit = habitsCollectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HabbitCollectionViewCell.self), for: indexPath) as! HabbitCollectionViewCell
 
                 cellHabit.habit = store.habits[indexPath.item]
+                cellHabit.onTapTrackImageViewDelegate = self
 
                  return cellHabit
             }
@@ -153,14 +149,12 @@ extension HabitsViewController: UICollectionViewDataSource {
 }
 extension HabitsViewController: ReloadingCollectionDataDelegate {
     func updCollection() {
-        print("refresh")
         habitsCollectionView.reloadData()
     }
 }
 
 extension HabitsViewController: ReloadingProgressBarDelegate {
     func reloadProgressBar() {
-        print("refresh progress bar")
         habitsCollectionView.reloadData()
     }
 }
