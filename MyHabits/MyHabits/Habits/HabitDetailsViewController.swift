@@ -18,17 +18,28 @@ class HabitDetailsViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    
+    private lazy var headerTable: UILabel = {
+        let label = UILabel()
+        label.text =  "АКТИВНОСТЬ"
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textColor = .systemGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = detailsHabit?.name
+        habitTableView.backgroundColor = .almostWhite
+        navigationItem.largeTitleDisplayMode = .never
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Править", style: .plain, target: self, action: #selector(editTap))
         navigationController?.navigationBar.tintColor = .customPurple
         
         setupView()
         
-        navigationItem.largeTitleDisplayMode = .never
 
         habitTableView.dataSource = self
         habitTableView.delegate = self
@@ -52,11 +63,16 @@ extension HabitDetailsViewController{
     func setupView() {
     
         view.addSubview(habitTableView)
+        view.addSubview(headerTable)
+        
         let constraints = [
             habitTableView.topAnchor.constraint(equalTo: view.topAnchor),
             habitTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             habitTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            habitTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            habitTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            headerTable.topAnchor.constraint(equalTo: habitTableView.topAnchor, constant: 22),
+            headerTable.leadingAnchor.constraint(equalTo: habitTableView.leadingAnchor, constant: 16)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -76,19 +92,14 @@ extension HabitDetailsViewController: UITableViewDataSource {
         cell.textLabel?.text = HabitsStore.shared.trackDateString(forIndex: indexPath.row)
         
         if let habit = detailsHabit {
-            if HabitsStore.shared.habit(habit, isTrackedIn: HabitsStore.shared.dates[indexPath.row]) {
+            if  HabitsStore.shared.habit(habit, isTrackedIn: HabitsStore.shared.dates[indexPath.row]) {
                 cell.accessoryType = .checkmark
                 cell.tintColor = .customPurple
             } else {
                 cell.accessoryType = .none
             }
         }
-        
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "АКТИВНОСТЬ"
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -97,9 +108,12 @@ extension HabitDetailsViewController: UITableViewDataSource {
 }
 
 extension HabitDetailsViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .zero
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return headerTable
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 47
     }
 
 }

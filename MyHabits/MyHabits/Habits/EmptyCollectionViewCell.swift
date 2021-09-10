@@ -23,14 +23,12 @@ class EmptyCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.backgroundColor = .white
         setupViews()
-        
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupViews()
     }
-    
 }
 
 

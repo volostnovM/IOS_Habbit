@@ -40,9 +40,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         contentView.roundCornerWithRadius(8, top: true, bottom: true, shadowEnabled: false)
-        
         setupView()
     }
     

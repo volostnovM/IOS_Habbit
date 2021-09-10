@@ -14,6 +14,7 @@ protocol ReloadingProgressBarDelegate: AnyObject {
 class HabbitCollectionViewCell: UICollectionViewCell {
     
     weak var onTapTrackImageViewDelegate: ReloadingProgressBarDelegate?
+    weak var delegateHabitCell: ReloadingCollectionDataDelegate?
     
     var habit: Habit? {
         didSet{
@@ -33,8 +34,6 @@ class HabbitCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-        
-    weak var delegateHabitCell: ReloadingCollectionDataDelegate?
     
     var nameHabitLabel: UILabel = {
         let label = UILabel()
@@ -80,22 +79,6 @@ class HabbitCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    @objc func tapButton() {
-        if let checkHabit = habit {
-            if checkHabit.isAlreadyTakenToday == true {
-                print("Привычка уже была сегодня нажата")
-            } else {
-                print("трекаем время привычки")
-                setupCheckedImageView()
-                HabitsStore.shared.track(checkHabit)
-                onTapTrackImageViewDelegate?.reloadProgressBar()
-            }
-        }
-        else {
-            print("Упс, вместо привычки nil")
-        }
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.roundCornerWithRadius(6, top: true, bottom: true, shadowEnabled: false)
@@ -110,6 +93,22 @@ class HabbitCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupViews()
+    }
+    
+    @objc func tapButton() {
+        if let checkHabit = habit {
+            if checkHabit.isAlreadyTakenToday == true {
+                print("Привычка уже была сегодня нажата")
+            } else {
+                print("трекаем время привычки")
+                setupCheckedImageView()
+                HabitsStore.shared.track(checkHabit)
+                onTapTrackImageViewDelegate?.reloadProgressBar()
+            }
+        }
+        else {
+            print("Упс, вместо привычки nil")
+        }
     }
     
 }

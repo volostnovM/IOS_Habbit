@@ -11,6 +11,8 @@ class HabitsViewController: UIViewController {
     
     private lazy var store = HabitsStore.shared
     
+    private lazy var appearance = UINavigationBarAppearance()
+    
     lazy var habitsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -29,20 +31,25 @@ class HabitsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(habitsCollectionView)
-        setupView()
-        
+        view.backgroundColor = .white
+        navigationItem.title = "Сегодня"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.tintColor = .customPurple
+        navigationController?.navigationBar.isTranslucent = true
+        appearance.backgroundColor = UIColor(red: 249.0/255.0, green: 249.0/255.0, blue: 249.0/255.0, alpha: 0.94)
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addHabit))
         navigationItem.rightBarButtonItem?.tintColor = .customPurple
+        
+        view.addSubview(habitsCollectionView)
+        habitsCollectionView.backgroundColor = .almostWhite
+        setupView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         habitsCollectionView.reloadData()
     }
     
@@ -75,7 +82,7 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
             return UIEdgeInsets(top: 22, left: 16, bottom: 18, right: 16)
         }
         else {
-            return UIEdgeInsets(top: .zero, left: 16, bottom: 18, right: 16)
+            return UIEdgeInsets(top: .zero, left: 16, bottom: 22, right: 16)
         }
     }
 
