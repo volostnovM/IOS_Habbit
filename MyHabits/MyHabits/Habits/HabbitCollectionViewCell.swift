@@ -14,7 +14,6 @@ protocol ReloadingProgressBarDelegate: AnyObject {
 class HabbitCollectionViewCell: UICollectionViewCell {
     
     weak var onTapTrackImageViewDelegate: ReloadingProgressBarDelegate?
-    weak var delegateHabitCell: ReloadingCollectionDataDelegate?
     
     var habit: Habit? {
         didSet{
@@ -100,7 +99,6 @@ class HabbitCollectionViewCell: UICollectionViewCell {
             if checkHabit.isAlreadyTakenToday == true {
                 print("Привычка уже была сегодня нажата")
             } else {
-                print("трекаем время привычки")
                 setupCheckedImageView()
                 HabitsStore.shared.track(checkHabit)
                 onTapTrackImageViewDelegate?.reloadProgressBar()

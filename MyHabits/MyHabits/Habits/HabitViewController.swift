@@ -44,6 +44,7 @@ class HabitViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+        stackView.alignment = .leading
         return stackView
     }()
     
@@ -212,7 +213,7 @@ class HabitViewController: UIViewController {
     
     @objc func deleteButtonPressed() {
          
-        let alertController = UIAlertController(title: "Удалить привычку?", message: "Вы хотите удалить привычку \(nameHabitLabel.text ?? "")", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Удалить привычку?", message: "Вы хотите удалить привычку \(nameHabitTextField.text ?? "")", preferredStyle: .alert)
          
         let cancelAction = UIAlertAction(title: "Отмена", style: .default) {_ in
             alertController.dismiss(animated: true, completion: nil)
@@ -238,6 +239,8 @@ class HabitViewController: UIViewController {
                 nameHabitTextField.textColor = habit.color
                 colorPickerButton.backgroundColor = habit.color
                 datepickerLabel.textColor = habit.color
+                datepicker.setDate(habit.date, animated: true)
+                dateChanged()
             }
         }
     }
@@ -280,16 +283,19 @@ extension HabitViewController {
         feedStack.addArrangedSubview(nameHabitLabel)
         feedStack.addArrangedSubview(nameHabitTextField)
         feedStack.addArrangedSubview(colorLabel)
+        feedStack.addArrangedSubview(colorPickerButton)
+        feedStack.addArrangedSubview(timeLabel)
         
         view.addSubview(feedStack)
         feedStack.setCustomSpacing(7.0, after: nameHabitLabel)
         feedStack.setCustomSpacing(15.0, after: nameHabitTextField)
+        feedStack.setCustomSpacing(7.0, after: colorLabel)
+        feedStack.setCustomSpacing(15.0, after: colorPickerButton)
  
-        view.addSubview(colorPickerButton)
-        view.addSubview(timeLabel)
         view.addSubview(habitTimeTextLabel)
-        view.addSubview(datepicker)
         view.addSubview(datepickerLabel)
+        view.addSubview(datepicker)
+
         
         
         let constraints = [
@@ -297,19 +303,13 @@ extension HabitViewController {
             feedStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             feedStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16),
 
-            colorPickerButton.topAnchor.constraint(equalTo: feedStack.bottomAnchor, constant: 7),
-            colorPickerButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             colorPickerButton.heightAnchor.constraint(equalToConstant: 30),
             colorPickerButton.widthAnchor.constraint(equalToConstant: 30),
             
-
-            timeLabel.topAnchor.constraint(equalTo: colorPickerButton.bottomAnchor, constant: 15),
-            timeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            
-            habitTimeTextLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 7),
+            habitTimeTextLabel.topAnchor.constraint(equalTo: feedStack.bottomAnchor, constant: 7),
             habitTimeTextLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             
-            datepickerLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 7),
+            datepickerLabel.topAnchor.constraint(equalTo: feedStack.bottomAnchor, constant: 7),
             datepickerLabel.leadingAnchor.constraint(equalTo: habitTimeTextLabel.trailingAnchor),
             
             datepicker.topAnchor.constraint(equalTo: habitTimeTextLabel.bottomAnchor, constant: 15),
